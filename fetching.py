@@ -34,4 +34,24 @@ class fetch(object):
         c = c.set_index('Date')
         
         return c
-
+    
+    def features_bitcoin():
+        
+        transaction_fees = 'https://api.blockchain.info/charts/transaction-fees?timespan=all&format=csv'
+        n_transactions = 'https://api.blockchain.info/charts/n-transactions?timespan=all&format=csv'
+        output_volume = 'https://api.blockchain.info/charts/output-volume?timespan=all&format=csv'
+        estimated_transaction_volume = 'https://api.blockchain.info/charts/estimated-transaction-volume?timespan=all&format=csv'
+        
+        transaction_fees=pd.read_csv(transaction_fees, names = ["Date","transaction_fees"])
+        n_transactions=pd.read_csv(n_transactions, names = ["Date","n_transactions"])
+        output_volume=pd.read_csv(output_volume, names = ["Date","output_volume"])
+        estimated_transaction_volume=pd.read_csv(estimated_transaction_volume, names = ["Date","estimated_transaction"])
+        
+        table = pd.merge(transaction_fees, n_transactions, on="Date")
+        table = pd.merge(table, output_volume, on="Date")
+        table = pd.merge(table, estimated_transaction_volume, on="Date")
+        
+        table = table.set_index("Date")
+        
+        return table
+        
