@@ -50,6 +50,8 @@ class fetch(object):
         table = pd.merge(transaction_fees, n_transactions, on="Date")
         table = pd.merge(table, output_volume, on="Date")
         table = pd.merge(table, estimated_transaction_volume, on="Date")
+        table['Date'] = [pd.datetime.strptime(d, '%Y-%m-%d %H:%M:%S') for d in table.Date]
+
         table = table.set_index("Date")
         
         return table
